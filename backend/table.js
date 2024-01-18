@@ -1,6 +1,7 @@
 const { Database } = require("sqlite3");
 
 let sql;
+//Hello
 const sqlite3 = require("sqlite3").verbose();
 
 const db = new Database("./test.db", sqlite3.OPEN_READWRITE, (err) => {
