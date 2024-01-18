@@ -1,30 +1,23 @@
 const express = require("express");
 const router = express.Router();
 
-const sqlite = require("sqlite3").verbose();
+module.exports = (db) => {
+  //
+  router.get("/", (req, res) => {
+    try {
+      db.all(`select * from courses`, [], (err, rows) => {
+        if (err) return res.json({ success: false, status: 400, msg: "hello" });
 
-router.get("/", (req, res) => {
-  try {
-    const db = new sqlite.Database(
-      "./test.db",
-      sqlite.OPEN_READWRITE,
-      (err) => {
-        if (err) return console.error(err);
-      }
-    );
-    db.all(`select * from courses`, [], (err, rows) => {
-      if (err) return res.json({ success: false, status: 400, msg: "hello" });
-
-      db.close();
-      return res.json({
-        status: 200,
-        data: rows,
-        success: true,
+        return res.json({
+          status: 200,
+          data: rows,
+          success: true,
+        });
       });
-    });
-  } catch (err) {
-    if (err) return res.json({ success: false, status: 400 });
-  }
-});
+    } catch (err) {
+      if (err) return res.json({ success: false, status: 400 });
+    }
+  });
 
-module.exports = router;
+  return router;
+};
