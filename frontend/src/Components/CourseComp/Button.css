@@ -1,0 +1,16 @@
+.btn {
+    text-align: center;
+    background-color: blue;
+    color: white;
+    box-shadow: 2px 2px 2px 2px black;
+    border-radius: 2px;
+    padding: 5px;
+    margin: 5px;
+    width: 50%;
+}
+
+.btn:hover {
+    cursor: pointer;
+    background-color: aliceblue;
+    color: blue;
+}

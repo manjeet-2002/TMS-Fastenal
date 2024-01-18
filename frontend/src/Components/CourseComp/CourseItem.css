@@ -1,0 +1,17 @@
+.courseItem__div {
+    align-items: center;
+    border: 2px solid black;
+    width: 20%;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 10px;
+}
+
+.btns {
+    display: flex;
+    justify-content: center;
+}
+
+.course_description {
+    text-align: center;
+}
