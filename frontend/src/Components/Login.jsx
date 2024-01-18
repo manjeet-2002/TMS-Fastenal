@@ -4,15 +4,11 @@ import "./LogSign.css";
 export const Login = () => {
   return (
     <>
-      <meta charSet="UTF-8" />
-      <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>TMS</title>
-      <link rel="stylesheet" href="SignUp.css" />
+      
       <div className="outer-box">
         <div className="inner-box">
           <header className="signup-header">
-            <h1>Log In</h1>
+            <h1>Login</h1>
           </header>
           <main className="signup-body">
             <form action="#">
