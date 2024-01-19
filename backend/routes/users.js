@@ -20,7 +20,23 @@ module.exports = (db) => {
   });
 
   router.post("/", (req, res) => {
-    res.send("USER ADDED");
+    try {
+      const { u_id, u_name, password } = req.body;
+
+      db.run(
+        `INSERT INTO users VALUES(?,?,?)`,
+        [u_id, u_name, password],
+        (err) => {
+          if (err) return console.error(err);
+        }
+      );
+      res.json({
+        status: 201,
+        success: true,
+      });
+    } catch (err) {
+      if (err) return res.json({ success: false, status: 400 });
+    }
   });
 
   return router;
