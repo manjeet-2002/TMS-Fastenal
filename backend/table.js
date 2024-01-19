@@ -83,4 +83,31 @@ db.serialize(() => {
   });
 });*/
 
+//------ Creating Enrollments Table
+/*
+db.serialize(() => {
+  const enrollments_create = `CREATE TABLE enrollments
+  (c_id INTEGER,
+  u_id INTEGER,
+  attended INTEGER,
+  score INTEGER,
+  FOREIGN KEY(c_id) REFERENCES courses(c_id),
+  FOREIGN KEY(u_id) REFERENCES users(u_id)
+  PRIMARY KEY(u_id,c_id)
+  )`;
+  db.run(enrollments_create, (err) => {
+    if (err) return console.error(err);
+  });
+  sql = `INSERT INTO enrollments VALUES (?,?,?,?)`;
+  db.run(sql, [3, 1, 1, 10], (err) => {
+    if (err) console.error(err);
+  });
+  db.run(sql, [2, 1, 0, 7], (err) => {
+    if (err) console.error(err);
+  });
+  db.run(sql, [3, 2, 0, 3], (err) => {
+    if (err) console.error(err);
+  });
+});
+*/
 db.close();
