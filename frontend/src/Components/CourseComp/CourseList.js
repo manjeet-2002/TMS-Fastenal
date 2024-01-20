@@ -1,6 +1,10 @@
 import { useState } from "react";
 import "./CourseList.css";
 import CourseItem from "./CourseItem";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 
 const CourseList = (props) => {
     const options = props.options;
@@ -36,19 +40,22 @@ const CourseList = (props) => {
     };
     return (
         <>
-            <div>
-                <select
-                    name="filter"
+            <FormControl>
+                <InputLabel id="demo-simple-select-label"></InputLabel>
+                <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
                     value={courseType}
+                    label="Age"
                     onChange={handleChange}
                 >
                     {options.map((option) => (
-                        <option key={option} value={option}>
+                        <MenuItem key={option} value={option}>
                             {option}
-                        </option>
+                        </MenuItem>
                     ))}
-                </select>
-            </div>
+                </Select>
+            </FormControl>
             <div className="course__list">{courses}</div>
         </>
     );
