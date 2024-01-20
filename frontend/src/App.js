@@ -1,10 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
+// import Home from "./pages/Home";
 
-import Login from "./pages/Login/Login";
 import Dashboard from "./pages/Dashboard";
-import Register from "./pages/Register";
-
+import Register from "./Components/Register";
 const courses = [
     {
         name: "javascript",
@@ -85,10 +83,9 @@ function App() {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/" element={<Dashboard isAdmin={1} />} />
-                {/* <Route path="dashboard" element={<Dashboard />} />
-                <Route path="register" element={<Register />} />
-                <Route path="login" element={<Login />} /> */}
+                {/* <Route path="/" element={<Dashboard isAdmin={0} />} /> */}
+                  {/* <Route path="dashboard" element={<Dashboard />} />  */}
+                <Route path="/register" element={<Register />} ></Route>
             </Routes>
         </BrowserRouter>
     );
