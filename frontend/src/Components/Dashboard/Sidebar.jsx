@@ -7,9 +7,23 @@ function Sidebar(props) {
                 <div className="sidebar-brand">Dashboard</div>
             </div>
             <ul className="sidebar-list">
-                <li className="sidebar-list-item" onClick={props.handleAllCourses}>All Courses</li>
-                <li className="sidebar-list-item" onClick={props.handleUpcomingCourses}>Upcoming Courses</li>
-                <li className="sidebar-list-item" onClick={props.handleAddCourse}>Add Course</li>
+                {props.isAdmin > 0 && (
+                    <li
+                        className="sidebar-list-item"
+                        onClick={props.handleAllCourses}
+                    >
+                        All Courses
+                    </li>
+                )}
+                {props.isAdmin > 0 && (
+                    <li
+                        className="sidebar-list-item"
+                        onClick={props.handleAddCourse}
+                    >
+                        Add Course
+                    </li>
+                )}
+                
             </ul>
         </aside>
     );

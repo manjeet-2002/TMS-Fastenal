@@ -4,36 +4,27 @@ import Sidebar from "./Sidebar";
 import Home from "./Home";
 import { useState } from "react";
 
-function App() {
+function Dashboard(props) {
     const [showForm, setShowForm] = useState(0);
     const [showAllCourses, setShowAllCourses] = useState(1);
-    const [showUpcomingCourses, setUpcomingCourses] = useState(0);
     const handleAddCourse = () => {
         setShowForm(1);
         setShowAllCourses(0);
-        setUpcomingCourses(0);
     };
     const handleAllCourses = () => {
         setShowForm(0);
         setShowAllCourses(1);
-        setUpcomingCourses(0);
-    };
-    const handleUpcomingCourses = () => {
-        setShowForm(0);
-        setShowAllCourses(0);
-        setUpcomingCourses(1);
     };
     return (
         <div className="grid-container">
-            <Header />
             <Sidebar
+                isAdmin={props.isAdmin}
                 handleAddCourse={handleAddCourse}
                 handleAllCourses={handleAllCourses}
-                handleUpcomingCourses={handleUpcomingCourses}
             />
-            <Home showForm={showForm} />
+            <Home isAdmin={props.isAdmin} showForm={showForm} />
         </div>
     );
 }
 
-export default App;
+export default Dashboard;

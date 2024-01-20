@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
-import Dashboard from "./pages/Dashboard";
-import Login from "./pages/login";
+// import Home from "./pages/Home";
+import Dashboard from "./Components/Dashboard/Dashboard";
+// import Login from "./pages/login";
 import Register from "./pages/Register";
 
 const courses = [
@@ -78,16 +78,16 @@ const courses = [
 ];
 
 let options = ["All Courses", "Upcoming Courses", "Courses Enrolled"];
-// options = ["All Courses", "Upcoming Courses"]
+options = ["All Courses", "Upcoming Courses"]
 
 function App() {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/" element={<Login />} />
-                <Route path="dashboard" element={<Dashboard />} />
+                <Route path="/" element={<Dashboard isAdmin={1} />} />
+                {/* <Route path="dashboard" element={<Dashboard />} />
                 <Route path="register" element={<Register />} />
-                <Route path="login" element={<Login />} />
+                <Route path="login" element={<Login />} /> */}
             </Routes>
         </BrowserRouter>
     );
