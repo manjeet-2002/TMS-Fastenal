@@ -1,7 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-// import Home from "./pages/Home";
-import Dashboard from "./Components/Dashboard/Dashboard";
-// import Login from "./pages/login";
+import Home from "./pages/Home";
+
+import Login from "./pages/Login/Login";
+import Dashboard from "./pages/Dashboard";
 import Register from "./pages/Register";
 
 const courses = [
