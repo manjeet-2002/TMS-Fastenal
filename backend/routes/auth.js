@@ -4,20 +4,23 @@ const router = express.Router();
 module.exports = (db) => {
   //
   router.post("/login", (req, res) => {
-    const { email, password } = req.body;
+    let { email, password } = req.body;
+    email = email.toLowerCase();
 
     try {
       db.get(
-        `SELECT COUNT(*) as isPresent FROM users WHERE email = (?) AND password = (?)`,
+        `SELECT COUNT(*) as isPresent, u_id FROM users WHERE email = (?) AND password = (?)`,
         [email, password],
         (err, result) => {
           if (err)
             return res.status(500).json({ message: "Internal Server Error" });
 
           if (result.isPresent)
-            return res
-              .status(200)
-              .json({ isAuth: true, message: "Login successfull" });
+            return res.status(200).json({
+              isAuth: true,
+              message: "Login successfull",
+              uid: result.u_id,
+            });
           else
             return res
               .status(401)
@@ -32,7 +35,8 @@ module.exports = (db) => {
 
   router.post("/signup", (req, res) => {
     try {
-      const { email, u_name, password } = req.body;
+      let { email, u_name, password } = req.body;
+      email = email.toLowerCase();
 
       db.get(
         `SELECT COUNT(*) AS userExists FROM users WHERE email = (?)`,

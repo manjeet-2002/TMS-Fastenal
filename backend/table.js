@@ -111,4 +111,6 @@ db.serialize(() => {
 });
 */
 
+// db.run(`delete from users`, (err) => console.log(err));
+
 db.close();
