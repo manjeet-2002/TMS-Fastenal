@@ -110,4 +110,5 @@ db.serialize(() => {
   });
 });
 */
+
 db.close();

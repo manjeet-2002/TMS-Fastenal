@@ -12,8 +12,9 @@ const db = new sqlite.Database("./test.db", sqlite.OPEN_READWRITE, (err) => {
 
 const coursesRoute = require("./routes/courses")(db);
 const usersRoute = require("./routes/users")(db);
+const authRoute = require("./routes/auth")(db);
 
 app.use("/api/courses", coursesRoute);
 app.use("/api/users", usersRoute);
-
+app.use("/api", authRoute);
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
