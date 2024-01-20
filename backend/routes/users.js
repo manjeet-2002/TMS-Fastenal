@@ -3,6 +3,8 @@ const router = express.Router();
 
 module.exports = (db) => {
   //
+  //-------GET ALL THE USERS-------------------
+
   router.get("/", (req, res) => {
     try {
       db.all(`select * from users`, [], (err, rows) => {
@@ -18,6 +20,8 @@ module.exports = (db) => {
       if (err) return res.json({ success: false, status: 400 });
     }
   });
+
+  //-----------GET A SPECIFIC USER-------------------
 
   // router.get("/:u_id", (req, res) => {
   //   try {
@@ -37,14 +41,15 @@ module.exports = (db) => {
   //   }
   // });
 
-  router.put("/:u_id/", (req, res) => {
+  //----------TOGGLE COURSE ENROLLMENT-----------------
+
+  router.put("/:u_id/enrollment", (req, res) => {
     try {
       const u_id = parseInt(req.params.u_id);
       const c_id = req.body.c_id;
       const is_enrolled = req.body.is_enrolled;
       console.log(is_enrolled);
       if (is_enrolled) {
-        console.log("Hello");
         db.run(
           `DELETE FROM enrollments WHERE u_id=(?) AND c_id=(?)`,
           [u_id, c_id],
@@ -57,8 +62,6 @@ module.exports = (db) => {
           }
         );
       } else {
-        console.log("Hellsdso");
-
         db.run(
           `INSERT INTO enrollments VALUES (?,?,?,?)`,
           [c_id, u_id, 0, 0],
@@ -79,10 +82,10 @@ module.exports = (db) => {
 
     //ASSUMING IT IS UPCOMING COURSE
   });
-  // Route to get users specific enrolled courses (for "My Courses" tab)
-  router.get("/:u_id/courses", (req, res) => {
-    console.log("Hello");
 
+  // Route to get users specific enrolled courses (for "My Courses" tab)
+
+  router.get("/:u_id/courses", (req, res) => {
     try {
       const u_id = parseInt(req.params.u_id);
       db.all(

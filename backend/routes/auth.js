@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 module.exports = (db) => {
-  //
+  //----------- LOGIN ---------------------------------
   router.post("/login", (req, res) => {
     let { email, password } = req.body;
     email = email.toLowerCase();
@@ -32,6 +32,8 @@ module.exports = (db) => {
       return res.status(500).json({ message: "Internal Server Error" });
     }
   });
+
+  //-----------SIGN UP---------------------------------
 
   router.post("/signup", (req, res) => {
     try {
