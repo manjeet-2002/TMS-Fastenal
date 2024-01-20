@@ -1,11 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
-<<<<<<<<< Temporary merge branch 1
+
 import Login from "./pages/Login/Login";
-=========
 import Dashboard from "./pages/Dashboard";
-import Login from "./pages/login";
->>>>>>>>> Temporary merge branch 2
 import Register from "./pages/Register";
 
 const courses = [
