@@ -37,25 +37,6 @@ module.exports = (db) => {
   //   }
   // });
 
-  router.post("/", (req, res) => {
-    try {
-      const { u_id, u_name, password } = req.body;
-
-      db.run(
-        `INSERT INTO users VALUES(?,?,?)`,
-        [u_id, u_name, password],
-        (err) => {
-          if (err) return console.error(err);
-        }
-      );
-      res.json({
-        status: 201,
-        success: true,
-      });
-    } catch (err) {
-      if (err) return res.json({ success: false, status: 400 });
-    }
-  });
   router.put("/:u_id/", (req, res) => {
     try {
       const u_id = parseInt(req.params.u_id);
