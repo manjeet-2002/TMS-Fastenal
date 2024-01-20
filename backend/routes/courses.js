@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 module.exports = (db) => {
-  //
+  //--------GET ALL COURSES-------------
   router.get("/", (req, res) => {
     try {
       db.all(`select * from courses`, [], (err, rows) => {
@@ -18,6 +18,8 @@ module.exports = (db) => {
       if (err) return res.json({ success: false, status: 400 });
     }
   });
+
+  //---------GET A SPECIFIC COURSE--------------
 
   router.get("/:c_id", (req, res) => {
     try {
@@ -36,6 +38,8 @@ module.exports = (db) => {
       res.status(500).json({ message: "Server error" });
     }
   });
+
+  //-----------POST A COURSE---------------
 
   router.post("/", (req, res) => {
     try {
