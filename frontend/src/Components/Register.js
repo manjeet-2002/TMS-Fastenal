@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./mix.css";
 import axios from "axios";
 
 const Register = () => {
+  const navigate = useNavigate();
   const [passShow, setPassShow] = useState(false);
   const [cpassShow, setCPassShow] = useState(false);
 
@@ -78,15 +79,9 @@ const Register = () => {
         .post(url, payload, { headers: { "content-type": "application/json" } })
         .then((res) => {
           if (res.status === 201) {
-            toast.success("Registration Successfully done 😃!", {
-              position: "top-center",
-            });
-            setInpval({
-              ...inpval,
-              fname: "",
-              email: "",
-              password: "",
-              cpassword: "",
+            navigate({
+              pathname: "/login",
+              search: "?reg=true",
             });
           }
         })
