@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 
 function Dashboard(props) {
     const navigate = useNavigate();
-    
     const [showForm, setShowForm] = useState(0);
     const [showAllCourses, setShowAllCourses] = useState(1);
     const handleAddCourse = () => {
@@ -21,7 +20,7 @@ function Dashboard(props) {
 
     useEffect(()=>{
         if(localStorage.getItem("uid")===null) navigate("/login");
-    },[]);
+    },[navigate]);
     return (
         <div className="grid-container">
             <Sidebar
