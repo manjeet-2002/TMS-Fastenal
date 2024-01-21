@@ -1,13 +1,13 @@
-import React, { useContext } from 'react'
-import Avatar from '@mui/material/Avatar';
-import "./header.css"
-import { LoginContext } from './ContextProvider/Context';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import { useNavigate , NavLink } from "react-router-dom"
+import React, { useContext } from "react";
+import Avatar from "@mui/material/Avatar";
+import "./header.css";
+import { LoginContext } from "./ContextProvider/Context";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import { useNavigate, NavLink } from "react-router-dom";
 
 const Header = () => {
-
+    const navigate = useNavigate();
     const { logindata, setLoginData } = useContext(LoginContext);
 
     const history = useNavigate();
@@ -21,53 +21,67 @@ const Header = () => {
         setAnchorEl(null);
     };
 
-
     const logoutuser = async () => {
-        let token = localStorage.getItem("usersdatatoken");
+        localStorage.removeItem("uid");
+        navigate("/login");
+        // let token = localStorage.getItem("usersdatatoken");
 
-        const res = await fetch("/logout", {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": token,
-                Accept: "application/json"
-            },
-            credentials: "include"
-        });
+        // const res = await fetch("/logout", {
+        //     method: "GET",
+        //     headers: {
+        //         "Content-Type": "application/json",
+        //         "Authorization": token,
+        //         Accept: "application/json"
+        //     },
+        //     credentials: "include"
+        // });
 
-        const data = await res.json();
-        console.log(data);
+        // const data = await res.json();
+        // console.log(data);
 
-        if (data.status == 201) {
-            console.log("use logout");
-            localStorage.removeItem("usersdatatoken");
-            setLoginData(false)
-            history("/");
-        } else {
-            console.log("error");
-        }
-    }
+        // if (data.status === 201) {
+        //     console.log("use logout");
+        //     localStorage.removeItem("usersdatatoken");
+        //     setLoginData(false)
+        //     history("/");
+        // } else {
+        //     console.log("error");
+        // }
+    };
 
     const goDash = () => {
-        history("/Dashboard")
-    }
+        history("/Dashboard");
+    };
 
     const goError = () => {
-        history("*")
-    }
+        history("*");
+    };
 
     return (
         <>
             <header>
                 <nav>
-                    
-                <NavLink to="/"><h1>Training Management System</h1></NavLink>
+                    <NavLink to="/">
+                        <h1>Training Management System</h1>
+                    </NavLink>
                     <div className="avtar">
-                        {
-                            logindata.ValidUserOne ? <Avatar style={{ background: "salmon", fontWeight: "bold", textTransform: "capitalize" }} onClick={handleClick}>{logindata.ValidUserOne.fname[0].toUpperCase()}</Avatar> :
-                                <Avatar style={{ background: "blue" }} onClick={handleClick} />
-                        }
-
+                        {logindata.ValidUserOne ? (
+                            <Avatar
+                                style={{
+                                    background: "salmon",
+                                    fontWeight: "bold",
+                                    textTransform: "capitalize",
+                                }}
+                                onClick={handleClick}
+                            >
+                                {logindata.ValidUserOne.fname[0].toUpperCase()}
+                            </Avatar>
+                        ) : (
+                            <Avatar
+                                style={{ background: "blue" }}
+                                onClick={handleClick}
+                            />
+                        )}
                     </div>
 
                     <Menu
@@ -76,36 +90,47 @@ const Header = () => {
                         open={open}
                         onClose={handleClose}
                         MenuListProps={{
-                            'aria-labelledby': 'basic-button',
+                            "aria-labelledby": "basic-button",
                         }}
                     >
-                        {
-                            logindata.ValidUserOne ? (
-                                <div>
-                                    <MenuItem onClick={() => {
-                                        goDash()
-                                        handleClose()
-                                    }}>Profile</MenuItem>
-                                    <MenuItem onClick={() => {
-                                        logoutuser()
-                                        handleClose()
-                                    }}>Logout</MenuItem>
-                                </div>
-                            ) : (
-                                <div>
-                                    <MenuItem onClick={() => {
-                                        goError()
-                                        handleClose()
-                                    }}>Profile</MenuItem>
-                                </div>
-                            )
-                        }
-
+                        {logindata.ValidUserOne ? (
+                            <div>
+                                <MenuItem
+                                    onClick={() => {
+                                        goDash();
+                                        handleClose();
+                                    }}
+                                >
+                                    Profile
+                                </MenuItem>
+                            </div>
+                        ) : (
+                            <div>
+                                <MenuItem
+                                    onClick={() => {
+                                        goError();
+                                        handleClose();
+                                    }}
+                                >
+                                    Profile
+                                </MenuItem>
+                                {   
+                                    localStorage.getItem("uid") != null && 
+                                    <MenuItem
+                                    onClick={() => {
+                                        logoutuser();
+                                        handleClose();
+                                    }}
+                                >
+                                    Logout
+                                </MenuItem>}
+                            </div>
+                        )}
                     </Menu>
                 </nav>
             </header>
         </>
-    )
-}
+    );
+};
 
-export default Header
+export default Header;

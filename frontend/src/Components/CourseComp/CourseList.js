@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./CourseList.css";
 import CourseItem from "./CourseItem";
 import InputLabel from "@mui/material/InputLabel";
@@ -7,36 +7,26 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 
 const CourseList = (props) => {
+    const uid = localStorage.getItem("uid");
     const options = props.options;
     const [courseType, setcourseType] = useState(options[0]);
-    const courseList = props.courses.map((course) => {
-        return <CourseItem isAdmin={props.isAdmin} course={course} />;
-    });
-    const [courses, setCourses] = useState(courseList);
+    const [courses, setCourses] = useState([]);
+    useEffect(() => {
+        if (courseType === options[0]) {
+            fetch("http://localhost:5000/api/courses")
+                .then((response) => response.json())
+                .then((data) => setCourses(data.data));
+        } else if (courseType === options[1]) {
+        } else {
+            console.log("reached");
+            fetch(`http://localhost:5000/api/users/${uid}/courses`)
+                .then((response) => response.json())
+                .then((data) => setCourses(data));
+        }
+    }, [courseType, options, uid]);
     const handleChange = (event) => {
         const selectedValue = event.target.value;
-        let newCourseList = [];
-        if (selectedValue === options[0]) {
-            newCourseList = props.courses.map((course) => {
-                return <CourseItem isAdmin={props.isAdmin} course={course} />;
-            });
-        } else if (selectedValue === options[1]) {
-            const newCourseListfiltered = props.courses.filter(
-                (course) => course.startDate > new Date().getTime()
-            );
-            newCourseList = newCourseListfiltered.map((course) => {
-                return <CourseItem isAdmin={props.isAdmin} course={course} />;
-            });
-        } else {
-            const newCourseListfiltered = props.courses.filter(
-                (course) => course.isEnrolled === 1
-            );
-            newCourseList = newCourseListfiltered.map((course) => {
-                return <CourseItem isAdmin={props.isAdmin} course={course} />;
-            });
-        }
         setcourseType(selectedValue);
-        setCourses(newCourseList);
     };
     return (
         <>
@@ -56,7 +46,13 @@ const CourseList = (props) => {
                     ))}
                 </Select>
             </FormControl>
-            <div className="course__list">{courses}</div>
+            <div className="course__list">
+                {courses.map((course) => {
+                    return (
+                        <CourseItem isAdmin={props.isAdmin} course={course} />
+                    );
+                })}
+            </div>
         </>
     );
 };

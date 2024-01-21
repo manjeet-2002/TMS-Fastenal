@@ -39,7 +39,7 @@ const DynamicList = ({ control, name }) => {
                         render={({ field }) => (
                             <TextField
                                 {...field}
-                                label={`Item ${index + 1}`}
+                                label={`Module ${index + 1}`}
                                 variant="outlined"
                                 size="small"
                                 fullWidth
@@ -105,8 +105,10 @@ const AddCourseForm = () => {
 
     // A function to handle form submission
     const onSubmit = (data) => {
-        console.log(data);
-        // Reset the form after submission
+        const uid = localStorage.getItem("uid");
+        const courseName = data.courseName;
+        console.log(courseName, data.dynamicList);
+        
         reset();
     };
 
@@ -149,10 +151,54 @@ const AddCourseForm = () => {
                                 rules={{ required: true }}
                             />
                         </Box>
+                        <Box display="flex" gap={2}>
+                            <Controller
+                                name="courseDuration"
+                                control={control}
+                                rules={{ required: true, min: 1, max: 1000 }}
+                                render={({ field }) => (
+                                    <TextField
+                                        {...field}
+                                        label="Course Duration"
+                                        type="number"
+                                        variant="outlined"
+                                        size="small"
+                                        fullWidth
+                                        error={!!errors.courseDuration}
+                                        helperText={
+                                            errors.courseDuration
+                                                ? "This field is required and must be between 1 and 1000"
+                                                : ""
+                                        }
+                                    />
+                                )}
+                            />
+                            <Controller
+                                name="courseCredits"
+                                control={control}
+                                rules={{ required: true, min: 1, max: 1000 }}
+                                render={({ field }) => (
+                                    <TextField
+                                        {...field}
+                                        label="Course Credits"
+                                        type="number"
+                                        variant="outlined"
+                                        size="small"
+                                        fullWidth
+                                        error={!!errors.courseCredits}
+                                        helperText={
+                                            errors.courseCredits
+                                                ? "This field is required and must be between 1 and 1000"
+                                                : ""
+                                        }
+                                    />
+                                )}
+                            />
+                        </Box>
                         <Controller
                             name="maxAttendees"
                             control={control}
-                            rules={{ required: true, min: 1, max: 100 }}
+                            rules={{ required: true, min: 1, max: 1000 }}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
@@ -164,7 +210,7 @@ const AddCourseForm = () => {
                                     error={!!errors.maxAttendees}
                                     helperText={
                                         errors.maxAttendees
-                                            ? "This field is required and must be between 1 and 100"
+                                            ? "This field is required and must be between 1 and 1000"
                                             : ""
                                     }
                                 />
