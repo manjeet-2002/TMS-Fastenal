@@ -1,8 +1,12 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-// import Home from "./pages/Home";
-
-import Dashboard from "./pages/Dashboard";
+import Header from "./Components/Header";
+import Login from "./Components/Login";
 import Register from "./Components/Register";
+import Error from "./Components/Error";
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
+import { Routes, Route, useNavigate,BrowserRouter } from "react-router-dom"
+import { useEffect, useContext, useState } from "react";
+import { LoginContext } from "./Components/ContextProvider/Context";
 const courses = [
     {
         name: "javascript",
@@ -80,14 +84,45 @@ let options = ["All Courses", "Upcoming Courses", "Courses Enrolled"];
 options = ["All Courses", "Upcoming Courses"]
 
 function App() {
+    const [data, setData] = useState(false);
+
+    const { logindata, setLoginData } = useContext(LoginContext);
+  
+    const history = useNavigate();
+
     return (
-        <BrowserRouter>
-            <Routes>
-                {/* <Route path="/" element={<Dashboard isAdmin={0} />} /> */}
-                  {/* <Route path="dashboard" element={<Dashboard />} />  */}
-                <Route path="/register" element={<Register />} ></Route>
-            </Routes>
-        </BrowserRouter>
+    //     <>
+    //     {
+    //       data ? (
+    //         <>
+    //           <Header />
+  
+    //           <Routes>
+    //             <Route path="/" element={<Login />} />
+    //             <Route path="/register" element={<Register />} />
+    //             {/* <Route path="/dash" element={<Dashboard />} /> */}
+    //             <Route path="*" element={<Error />} />
+    //           </Routes>
+    //         </>
+  
+    //       ) : <Box sx={{ display: 'flex', justifyContent: "center", alignItems: "center", height: "100vh" }}>
+    //         Loading... &nbsp;
+    //         <CircularProgress />
+    //       </Box>
+    //     }
+  
+  
+    //   </>
+    <>
+    <Header />
+
+    <Routes>
+      <Route path="/" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+      {/* <Route path="/dash" element={<Dashboard />} /> */}
+      <Route path="*" element={<Error />} />
+    </Routes>
+  </>
     );
 }
 
