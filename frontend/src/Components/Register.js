@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+
 import "react-toastify/dist/ReactToastify.css";
 import "./mix.css";
 import axios from "axios";
 
 const Register = () => {
+  let navigate = useNavigate();
   const [passShow, setPassShow] = useState(false);
   const [cpassShow, setCPassShow] = useState(false);
 
@@ -88,6 +90,7 @@ const Register = () => {
               password: "",
               cpassword: "",
             });
+            navigate("/");
           }
         })
         .catch((err) => {
