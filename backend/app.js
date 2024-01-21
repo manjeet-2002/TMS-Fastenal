@@ -1,9 +1,11 @@
 const express = require("express");
 const app = express();
+const cors = require("cors");
 const port = 5000;
 const bodyParser = require("body-parser");
 const sqlite = require("sqlite3").verbose();
 
+app.use(cors());
 app.use(bodyParser.json());
 
 const db = new sqlite.Database("./test.db", sqlite.OPEN_READWRITE, (err) => {
