@@ -6,7 +6,6 @@ import "./mix.css"
 const Login = () => {
 
     const [passShow, setPassShow] = useState(false);
-
     const [inpval, setInpval] = useState({
         email: "",
         password: "",

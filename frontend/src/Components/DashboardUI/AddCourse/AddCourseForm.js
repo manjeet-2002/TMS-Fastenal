@@ -1,9 +1,7 @@
 import React from "react";
 import { useForm, Controller, useFieldArray } from "react-hook-form";
-import { Button, TextField, Box } from "@mui/material";
+import { Button, TextField, Box, Grid } from "@mui/material";
 import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 
 // A custom component that renders a dynamic list of text inputs
@@ -113,71 +111,81 @@ const AddCourseForm = () => {
     };
 
     return (
-        <Card sx={{ maxWidth: 345, bgcolor: "white", p: 1, width: 1}}>
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <Box display="flex" flexDirection="column" gap={2}>
-                    <Controller
-                        name="courseName"
-                        control={control}
-                        rules={{ required: true }}
-                        render={({ field }) => (
-                            <TextField
-                                {...field}
-                                label="Course Name"
-                                variant="outlined"
-                                size="small"
-                                fullWidth
-                                error={!!errors.courseName}
-                                helperText={
-                                    errors.courseName
-                                        ? "This field is required"
-                                        : ""
-                                }
+        <Grid container justifyContent="center">
+            <Card sx={{ maxWidth: "75%", bgcolor: "white", p: 1, width: 1 }}>
+                <form onSubmit={handleSubmit(onSubmit)}>
+                    <Box display="flex" flexDirection="column" gap={2}>
+                        <Controller
+                            name="courseName"
+                            control={control}
+                            rules={{ required: true }}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    label="Course Name"
+                                    variant="outlined"
+                                    size="small"
+                                    fullWidth
+                                    error={!!errors.courseName}
+                                    helperText={
+                                        errors.courseName
+                                            ? "This field is required"
+                                            : ""
+                                    }
+                                />
+                            )}
+                        />
+                        <Box display="flex" gap={2}>
+                            <DateInput
+                                control={control}
+                                name="startDate"
+                                label="Start Date"
+                                rules={{ required: true }}
                             />
-                        )}
-                    />
-                    <Box display="flex" gap={2}>
-                        <DateInput
+                            <DateInput
+                                control={control}
+                                name="endDate"
+                                label="End Date"
+                                rules={{ required: true }}
+                            />
+                        </Box>
+                        <Controller
+                            name="maxAttendees"
                             control={control}
-                            name="startDate"
-                            label="Start Date"
-                            rules={{ required: true }}
+                            rules={{ required: true, min: 1, max: 100 }}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    label="Maximum Attendees"
+                                    type="number"
+                                    variant="outlined"
+                                    size="small"
+                                    fullWidth
+                                    error={!!errors.maxAttendees}
+                                    helperText={
+                                        errors.maxAttendees
+                                            ? "This field is required and must be between 1 and 100"
+                                            : ""
+                                    }
+                                />
+                            )}
                         />
-                        <DateInput
-                            control={control}
-                            name="endDate"
-                            label="End Date"
-                            rules={{ required: true }}
-                        />
+
+                        <DynamicList control={control} name="dynamicList" />
+                        <Grid container justifyContent="center">
+                            <Button
+                                sx={{ maxWidth: "50%" }}
+                                variant="contained"
+                                color="success"
+                                type="submit"
+                            >
+                                Submit
+                            </Button>
+                        </Grid>
                     </Box>
-                    <Controller
-                        name="maxAttendees"
-                        control={control}
-                        rules={{ required: true, min: 1, max: 100 }}
-                        render={({ field }) => (
-                            <TextField
-                                {...field}
-                                label="Maximum Attendees"
-                                type="number"
-                                variant="outlined"
-                                size="small"
-                                fullWidth
-                                error={!!errors.maxAttendees}
-                                helperText={
-                                    errors.maxAttendees
-                                        ? "This field is required and must be between 1 and 100"
-                                        : ""
-                                }
-                            />
-                        )}
-                    />
-                    <DynamicList control={control} name="dynamicList" />
-                    <Button variant="contained" color="success" type="submit">
-                        Submit
-                    </Button>
-                </Box>
-            </form>
-        </Card>
+                </form>
+            </Card>
+        </Grid>
     );
 };
 
