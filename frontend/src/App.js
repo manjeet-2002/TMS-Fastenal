@@ -92,27 +92,6 @@ function App() {
   const history = useNavigate();
 
   return (
-    //     <>
-    //     {
-    //       data ? (
-    //         <>
-    //           <Header />
-
-    //           <Routes>
-    //             <Route path="/" element={<Login />} />
-    //             <Route path="/register" element={<Register />} />
-    //             {/* <Route path="/dash" element={<Dashboard />} /> */}
-    //             <Route path="*" element={<Error />} />
-    //           </Routes>
-    //         </>
-
-    //       ) : <Box sx={{ display: 'flex', justifyContent: "center", alignItems: "center", height: "100vh" }}>
-    //         Loading... &nbsp;
-    //         <CircularProgress />
-    //       </Box>
-    //     }
-
-    //   </>
     <>
       <Header />
 
