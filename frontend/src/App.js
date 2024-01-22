@@ -98,7 +98,7 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/" element={<Dashboard isAdmin={1}/>} />
+        <Route path="/" element={<Dashboard isAdmin={0}/>} />
         <Route path="*" element={<Error />} />
       </Routes>
     </>
