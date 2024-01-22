@@ -20,10 +20,10 @@ module.exports = (db) => {
   });
 
   //---------GET A SPECIFIC COURSE--------------
-
   router.get("/:c_id", (req, res) => {
     try {
       const c_id = req.params.c_id;
+      const courseDetails = {};
 
       db.get(`SELECT * FROM courses WHERE c_id=(?)`, [c_id], (err, course) => {
         console.log(course);
@@ -31,8 +31,21 @@ module.exports = (db) => {
         if (!course)
           return res.status(404).json({ message: "resource not found" });
         if (err) return res.status(500).json({ message: "Internal Error" });
-        res.status(200).json(course);
+        courseDetails.course = course;
       });
+
+      db.all(
+        `SELECT m_id, m_name FROM modules WHERE c_id=(?)`,
+        [c_id],
+        (err, modules) => {
+          console.log(modules);
+          if (!modules)
+            return res.status(404).json({ message: "resource not found" });
+          if (err) return res.status(500).json({ message: "Internal Error" });
+          courseDetails.modules = modules;
+          res.status(200).json(courseDetails);
+        }
+      );
     } catch {
       console.error("error");
       res.status(500).json({ message: "Server error" });
