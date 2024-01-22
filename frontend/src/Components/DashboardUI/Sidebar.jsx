@@ -1,6 +1,7 @@
 import React from "react";
 
 function Sidebar(props) {
+    
     return (
         <aside id="sidebar">
             <div className="sidebar-title">
@@ -15,14 +16,23 @@ function Sidebar(props) {
                         All Courses
                     </li>
                 )}
-                {props.isAdmin > 0 && (
+                {props.isAdmin ? (
                     <li
                         className="sidebar-list-item"
                         onClick={props.handleAddCourse}
                     >
                         Add Course
                     </li>
-                )}
+                )
+            : (
+                <li
+                    className="sidebar-list-item"
+                    onClick={props.handleAddCourse}
+                >
+                    Abbbd Course
+                </li>
+            )
+            }
                 
             </ul>
         </aside>

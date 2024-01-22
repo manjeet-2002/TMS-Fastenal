@@ -1,10 +1,10 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import "./header.css";
 import { LoginContext } from "./ContextProvider/Context";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import { useNavigate, NavLink } from "react-router-dom";
+import { useNavigate, NavLink, unstable_HistoryRouter } from "react-router-dom";
 
 const Header = () => {
     const navigate = useNavigate();
@@ -12,11 +12,14 @@ const Header = () => {
 
     const history = useNavigate();
 
+    const [isOpen,setisOpen] =useState(false);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
+
+   
     const handleClose = () => {
         setAnchorEl(null);
     };
@@ -50,12 +53,16 @@ const Header = () => {
     };
 
     const goDash = () => {
-        history("/Dashboard");
+        history("/");
     };
 
     const goError = () => {
         history("*");
     };
+
+    function toggle() {
+        history("/profile");
+    }
 
     return (
         <>
@@ -67,14 +74,14 @@ const Header = () => {
                     <div className="avtar">
                         {logindata.ValidUserOne ? (
                             <Avatar
-                                style={{
-                                    background: "salmon",
-                                    fontWeight: "bold",
-                                    textTransform: "capitalize",
-                                }}
+                                // style={{
+                                //     background: "salmon",
+                                //     fontWeight: "bold",
+                                //     textTransform: "capitalize",
+                                // }}
                                 onClick={handleClick}
                             >
-                                {logindata.ValidUserOne.fname[0].toUpperCase()}
+                                {/* {logindata.ValidUserOne.fname[0].toUpperCase()} */}
                             </Avatar>
                         ) : (
                             <Avatar
@@ -97,10 +104,10 @@ const Header = () => {
                             <div>
                                 <MenuItem
                                     onClick={() => {
-                                        goDash();
+                                        goError();
                                         handleClose();
                                     }}
-                                >
+                                   >
                                     Profile
                                 </MenuItem>
                             </div>
@@ -108,11 +115,12 @@ const Header = () => {
                             <div>
                                 <MenuItem
                                     onClick={() => {
-                                        goError();
+                                        toggle();
                                         handleClose();
                                     }}
                                 >
                                     Profile
+                                
                                 </MenuItem>
                                 {   
                                     localStorage.getItem("uid") != null && 
@@ -124,6 +132,7 @@ const Header = () => {
                                 >
                                     Logout
                                 </MenuItem>}
+                                
                             </div>
                         )}
                     </Menu>
