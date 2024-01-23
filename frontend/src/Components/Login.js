@@ -58,6 +58,7 @@ const Login = () => {
 
             if (res.status === 200) {
                 localStorage.setItem("uid", data.uid);
+                localStorage.setItem("isAdmin", data.isAdmin);
                 history("/");
                 setInpval({ ...inpval, email: "", password: "" });
             } else if (res.status == 401) {
