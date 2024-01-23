@@ -23,7 +23,9 @@ function Home(props) {
     }, [props.showAllCourses, props.showMyCourses, uid, props.courseType]);
     return (
         <main className="main-container">
-            {props.showForm === 1 && <AddCourseForm />}
+            {props.showForm === 1 && (
+                <AddCourseForm handleAllCourses={props.handleAllCourses} />
+            )}
             {props.showForm === 0 && (
                 <CourseList
                     showAllCourses={props.showAllCourses}

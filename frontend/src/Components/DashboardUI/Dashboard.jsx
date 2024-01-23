@@ -1,5 +1,4 @@
 import "./Dashboard.css";
-import Header from "./Header";
 import Sidebar from "./Sidebar";
 import Home from "./Home";
 import { useEffect, useState } from "react";
@@ -57,7 +56,7 @@ function Dashboard(props) {
                 handleMyCourses={handleMyCourses}
                 handleAllCourses={handleAllCourses}
             />
-            <FormControl>
+            {showObject.showForm === 0 && <FormControl>
                 <InputLabel id="demo-simple-select-label"></InputLabel>
                 <Select
                     labelId="demo-simple-select-label"
@@ -72,13 +71,14 @@ function Dashboard(props) {
                         </MenuItem>
                     ))}
                 </Select>
-            </FormControl>
+            </FormControl>}
             <Home
                 options={options}
                 courseType={courseType}
                 showForm={showObject.showForm}
                 showAllCourses={showObject.showAllCourses}
                 showMyCourses={showObject.showMyCourses}
+                handleAllCourses={handleAllCourses}
             />
         </div>
     );
