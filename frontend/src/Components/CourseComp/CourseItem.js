@@ -27,6 +27,8 @@ const CourseItem = (props) => {
   return (
     <div className="courseItem__div" style={{backgroundColor:props.course.isEnrolled?"green":"white"}}>
       <p className="course_description">{props.course.c_name}</p>
+      <p className="course_description">{props.course.start_date}</p>
+      <p className="course_description">{props.course.end_date}</p>
       <div className="btns">
         {isAdmin === "1" && <MyBtn name="edit"/>}
         <Button onClick={handleOpen}>View</Button>

@@ -56,22 +56,24 @@ function Dashboard(props) {
                 handleMyCourses={handleMyCourses}
                 handleAllCourses={handleAllCourses}
             />
-            {showObject.showForm === 0 && <FormControl>
-                <InputLabel id="demo-simple-select-label"></InputLabel>
-                <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={courseType}
-                    label="Age"
-                    onChange={handleChange}
-                >
-                    {options.map((option) => (
-                        <MenuItem key={option} value={option}>
-                            {option}
-                        </MenuItem>
-                    ))}
-                </Select>
-            </FormControl>}
+            {showObject.showForm === 0 && (
+                <FormControl sx={{ width: 1 / 2, m: 5, ml: 10 }}>
+                    <InputLabel id="demo-simple-select-label"></InputLabel>
+                    <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={courseType}
+                        label="Age"
+                        onChange={handleChange}
+                    >
+                        {options.map((option) => (
+                            <MenuItem key={option} value={option}>
+                                {option}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+            )}
             <Home
                 options={options}
                 courseType={courseType}
