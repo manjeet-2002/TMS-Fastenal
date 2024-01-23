@@ -9,19 +9,22 @@ module.exports = (db) => {
 
     try {
       db.get(
-        `SELECT COUNT(*) as isPresent, u_id FROM users WHERE email = (?) AND password = (?)`,
+        `SELECT COUNT(*) as isPresent, u_id, email FROM users WHERE email = (?) AND password = (?)`,
         [email, password],
         (err, result) => {
           if (err)
             return res.status(500).json({ message: "Internal Server Error" });
 
-          if (result.isPresent)
+          if (result.isPresent) {
+            console.log(result);
+            const isAdmin = result.email === "admin@fastenal.com" ? 1 : 0;
             return res.status(200).json({
               isAuth: true,
               message: "Login successfull",
               uid: result.u_id,
+              isAdmin,
             });
-          else
+          } else
             return res
               .status(401)
               .json({ isAuth: false, message: "Bad Credentials" });
