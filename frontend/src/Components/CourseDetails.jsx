@@ -5,6 +5,7 @@ import Attendance from "./Attendance";
 
 const CourseDetails = (props) => {
   const isAdmin = localStorage.getItem("isAdmin");
+  console.log(isAdmin);
   const [courses, setCourses] = useState({
     c_id: "",
     c_name: "Loading...",
@@ -95,7 +96,9 @@ const CourseDetails = (props) => {
             Enroll
           </button>
         </div>
-        {isAdmin ? <Attendance attendees={attendees} /> : ""}
+        {isAdmin === "1" && (
+          <Attendance attendees={attendees} c_id={props.c_id} />
+        )}
       </div>
     </div>
   );
