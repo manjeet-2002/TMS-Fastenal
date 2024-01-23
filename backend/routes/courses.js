@@ -4,16 +4,28 @@ const router = express.Router();
 module.exports = (db) => {
   //--------GET ALL COURSES-------------
   router.get("/", (req, res) => {
+    const u_id = req.body.u_id;
+    console.log(u_id);
     try {
-      db.all(`select * from courses`, [], (err, rows) => {
-        if (err) return res.json({ success: false, status: 400, msg: "hello" });
-
-        return res.json({
-          status: 200,
-          data: rows,
-          success: true,
-        });
-      });
+      db.all(
+        `select * from courses as a left join (SELECT c_id as enrolled FROM enrollments WHERE u_id=(?)) as b on a.c_id = b.enrolled`,
+        [u_id],
+        (err, rows) => {
+          console.log(err);
+          if (err)
+            return res.json({
+              success: false,
+              status: 400,
+              msg: "Resource Not found",
+            });
+          console.log(rows);
+          return res.json({
+            status: 200,
+            data: rows,
+            success: true,
+          });
+        }
+      );
     } catch (err) {
       if (err) return res.json({ success: false, status: 400 });
     }
@@ -101,6 +113,7 @@ module.exports = (db) => {
       if (err) return res.json({ success: false, status: 400 });
     }
   });
+
   router.put("/", (req, res) => {
     try {
       const {
