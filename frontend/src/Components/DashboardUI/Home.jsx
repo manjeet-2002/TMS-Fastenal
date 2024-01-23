@@ -7,8 +7,9 @@ function Home(props) {
   const uid = localStorage.getItem("uid");
   useEffect(() => {
     if (props.showAllCourses === 1) {
+      console.log(uid);
       axios
-        .get("http://localhost:5000/api/courses", { u_id: uid })
+        .get("http://localhost:5000/api/courses", { params: { u_id: uid } })
         .then((res) => {
           setCourses(res.data.data);
         })
