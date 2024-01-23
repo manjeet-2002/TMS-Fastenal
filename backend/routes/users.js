@@ -127,7 +127,7 @@ module.exports = (db) => {
     try {
       const u_id = parseInt(req.params.u_id);
       db.all(
-        `SELECT * FROM enrollments JOIN courses WHERE courses.c_id=enrollments.c_id AND enrollments.u_id=(?)`,
+        `SELECT *, 1 as isEnrolled FROM enrollments JOIN courses WHERE courses.c_id=enrollments.c_id AND enrollments.u_id=(?)`,
         [u_id],
         (err, enrolled_courses) => {
           console.log(enrolled_courses);
@@ -135,6 +135,7 @@ module.exports = (db) => {
           if (!enrolled_courses)
             return res.status(404).json({ message: "resource not found" });
           if (err) return res.status(500).json({ message: "Internal Error" });
+
           res.status(200).json(enrolled_courses);
         }
       );

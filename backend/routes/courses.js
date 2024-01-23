@@ -8,7 +8,7 @@ module.exports = (db) => {
     console.log(u_id);
     try {
       db.all(
-        `select * from courses as a left join (SELECT c_id as enrolled FROM enrollments WHERE u_id=(?)) as b on a.c_id = b.enrolled`,
+        `select * from courses as a left join (SELECT c_id as isEnrolled FROM enrollments WHERE u_id=(?)) as b on a.c_id = b.isEnrolled`,
         [u_id],
         (err, rows) => {
           console.log(err);
@@ -30,8 +30,77 @@ module.exports = (db) => {
       if (err) return res.json({ success: false, status: 400 });
     }
   });
+  //----- SHow ALL USERS ENROLLED IN THE COURSE
+  //CHECK STATUS CODES
+  //If there are no rows then i will return message no Student enrolled
+  router.get("/:c_id/attendance", (req, res) => {
+    try {
+      const c_id = req.params.c_id;
+      db.all(
+        `SELECT enrollments.u_id,users.u_name,enrollments.attended FROM enrollments JOIN users ON users.u_id=enrollments.u_id AND enrollments.c_id=(?)`,
+        [c_id],
+        (err, rows) => {
+          if (err) {
+            console.log("bye1");
 
-  //---------GET A SPECIFIC COURSE--------------
+            return res.status(500).json({ message: err });
+          } else if (rows.length < 1) {
+            return res
+              .status(204)
+              .json({ message: "No Enrollements in the course!" });
+          } else {
+            return res.status(200).json(rows);
+          }
+        }
+      );
+    } catch {
+      console.error("error");
+      res.status(500).json({ message: "Server error" });
+    }
+  });
+  //--- PUT REQUEST FOR ATTENDANCE
+  router.put("/:c_id/attendance", (req, res) => {
+    const passed = 1;
+    try {
+      const c_id = req.params.c_id;
+
+      //An array as input with u_id's their attendance
+      //{u_id:,attended:}
+
+      console.log(":Hello");
+
+      const users = req.body;
+
+      users.forEach((user) => {
+        console.log(user);
+
+        db.run(
+          `UPDATE enrollments SET attended=(?) WHERE u_id=(?) AND c_id=(?)`,
+          [user.attended, user.u_id, c_id],
+          (err) => {
+            if (err) {
+              passed = 0;
+
+              // return console.log(err);
+              // return res.status(500).json({ message: err });
+            }
+          }
+        );
+      });
+      if (passed == 0) {
+        console.log("HEHE");
+        res.status(500).json({ message: "Internal Error" });
+      } else {
+        res.status(200).json({ message: "Attendance Marked Succesfully!" });
+      }
+    } catch (error) {
+      console.error("error");
+      res.status(500).json({ message: "Server error" });
+    }
+  });
+  // I WILL GET users allong with their current attendance system
+  //---------GET A SPECIFIC COURSE-------------
+
   router.get("/:c_id", (req, res) => {
     try {
       const c_id = req.params.c_id;
@@ -58,8 +127,8 @@ module.exports = (db) => {
           res.status(200).json(courseDetails);
         }
       );
-    } catch {
-      console.error("error");
+    } catch (error) {
+      console.error(error);
       res.status(500).json({ message: "Server error" });
     }
   });
@@ -80,7 +149,7 @@ module.exports = (db) => {
       } = req.body;
       console.log(c_id, modules, c_name);
       db.run(
-        `INSERT INTO courses VALUES(?,?,?,?,?,?,?)`,
+        `INSERT INTO courses VALUES(?,?,?,?,?,?,?,?)`,
         [
           c_id,
           c_name,
@@ -89,6 +158,7 @@ module.exports = (db) => {
           parseInt(duration),
           parseInt(credits),
           parseInt(max_attendees),
+          0,
         ],
         (err) => {
           if (err) return console.error(err);
@@ -114,6 +184,7 @@ module.exports = (db) => {
     }
   });
 
+  // KINDLY SEND old enrolled value in the payload
   router.put("/", (req, res) => {
     try {
       const {
@@ -125,16 +196,19 @@ module.exports = (db) => {
         courseCredits: credits,
         maxAttendees: max_attendees,
         dynamicList: modules,
+        enrolled: enrolled,
       } = req.body;
       console.log(c_id, modules, c_name);
+
       db.run(`DELETE FROM modules WHERE c_id=(?)`, [c_id], (err) => {
         if (err) return console.error(err);
       });
+
       db.run(`DELETE FROM courses WHERE c_id=(?)`, [c_id], (err) => {
         if (err) return console.error(err);
       });
       db.run(
-        `INSERT INTO courses VALUES(?,?,?,?,?,?,?)`,
+        `INSERT INTO courses VALUES(?,?,?,?,?,?,?,?,?)`,
         [
           c_id,
           c_name,
@@ -143,6 +217,7 @@ module.exports = (db) => {
           parseInt(duration),
           parseInt(credits),
           parseInt(max_attendees),
+          parseInt(enrolled),
         ],
         (err) => {
           if (err) return console.error(err);
