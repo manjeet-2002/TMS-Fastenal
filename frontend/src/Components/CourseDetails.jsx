@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import "./CourseDetails.css";
 import axios from "axios";
+import Attendance from "./Attendance";
 
 const CourseDetails = (props) => {
+  const isAdmin = localStorage.getItem("isAdmin");
   const [courses, setCourses] = useState({
     c_id: "",
     c_name: "Loading...",
@@ -12,12 +14,16 @@ const CourseDetails = (props) => {
     credits: null,
     max_attendees: null,
   });
-  // let course={};
-  // let modules=[];
   const [module, setModule] = useState([
     { m_name: "Module 1" },
     { m_name: "Module 2" },
   ]);
+
+  const [attendees, setAttendees] = useState([
+    { u_id: 0, u_name: "Loading...", attended: 1 },
+    { u_id: 1, u_name: "Loading...", attended: 0 },
+  ]);
+
   const uid = localStorage.getItem("uid");
 
   async function handleEnrollment() {
@@ -36,6 +42,14 @@ const CourseDetails = (props) => {
         console.error(err);
       });
   }
+
+  useEffect(() => {
+    const url = `http://localhost:5000/api/courses/${props.c_id}/attendance`;
+    axios
+      .get(url)
+      .then((res) => setAttendees(res.data))
+      .catch((err) => console.error(err));
+  }, [courses.c_id]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -81,6 +95,7 @@ const CourseDetails = (props) => {
             Enroll
           </button>
         </div>
+        {isAdmin ? <Attendance attendees={attendees} /> : ""}
       </div>
     </div>
   );
