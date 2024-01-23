@@ -18,21 +18,31 @@ const CourseDetails = (props) => {
     { m_name: "Module 1" },
     { m_name: "Module 2" },
   ]);
+  const uid = localStorage.getItem("uid");
 
-  // const handleEnroll = () => {
-  //   // Add your enrollment logic here
-  //     const u_id=localStorage.getItem("uid");
-  //   ;
-  // };
-
-  // useEffect(()=>)
+  async function handleEnrollment() {
+    const is_enrolled = false;
+    const c_id = props.c_id;
+    const url = `http://localhost:5000/api/users/${uid}/enrollment`;
+    axios
+      .put(url, {
+        c_id,
+        is_enrolled,
+      })
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
 
   useEffect(() => {
     const fetchData = async () => {
       axios
         .get(`http://localhost:5000/api/courses/${props.c_id}`)
         .then((res) => {
-          console.log(res.data.modules);
+          console.log(res.data.course);
           setCourses(res.data.course);
           setModule(res.data.modules);
 
@@ -47,25 +57,27 @@ const CourseDetails = (props) => {
   return (
     <div className="overlay">
       <div className="container">
-        <h1 className="heading">{courses.c_name}</h1>
+        <h1 className="heading">{courses?.c_name}</h1>
         <p>Modules :</p>
         <ul>
-          {module.map((item) => (
+          {module.map((item, index) => (
             <div className="box">
-              <li className="list-item">{item.m_name}</li>
+              <li key={index} className="list-item">
+                {item.m_name}
+              </li>
             </div>
           ))}
         </ul>
 
         <div>
-          <p className="paragraph">{courses.description}</p>
-          <p className="paragraph">Duration: {courses.duration} hours</p>
-          <p className="paragraph">Start Date: {courses.start_date} </p>
-          <p className="paragraph">End Date: {courses.end_date} </p>
-          <p className="paragraph">Total Seats : {courses.max_attendees}</p>
+          <p className="paragraph">{courses?.description}</p>
+          <p className="paragraph">Duration: {courses?.duration} hours</p>
+          <p className="paragraph">Start Date: {courses?.start_date} </p>
+          <p className="paragraph">End Date: {courses?.end_date} </p>
+          <p className="paragraph">Total Seats : {courses?.max_attendees}</p>
         </div>
         <div className="button-div">
-          <button type="button" className="button">
+          <button type="button" className="button" onClick={handleEnrollment}>
             Enroll
           </button>
         </div>

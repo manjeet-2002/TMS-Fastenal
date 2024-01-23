@@ -25,12 +25,10 @@ const CourseItem = (props) => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   return (
-    <div className="courseItem__div">
+    <div className="courseItem__div" style={{backgroundColor:props.course.isEnrolled?"green":"white"}}>
       <p className="course_description">{props.course.c_name}</p>
       <div className="btns">
         {isAdmin === "1" && <MyBtn name="edit"/>}
-        {isAdmin === "0" && <MyBtn name={props.course.isEnrolled === 1 ? "unenroll" : "enroll"}/>}
-        {/* <MyBtn name="view"/> */}
         <Button onClick={handleOpen}>View</Button>
       <Modal
         open={open}
