@@ -10,8 +10,8 @@ const db = new Database("./test.db", sqlite3.OPEN_READWRITE, (err) => {
 
 // db.run(`DROP TABLE modules`);
 // ---------Creating Courses Table--------
-
-db.serialize(() => {
+db.run(`ALTER TABLE courses ADD COLUMN enrolled INTEGER DEFAULT 0`);
+/*db.serialize(() => {
   const courses_create = `CREATE TABLE courses(c_id TEXT PRIMARY KEY,
     c_name TEXT,
     start_date TEXT,
@@ -33,7 +33,7 @@ db.serialize(() => {
     if (err) return console.log(err);
   });
 });
-
+*/
 //------------Creating Users table------------
 /*
 db.serialize(() => {
@@ -60,7 +60,7 @@ db.serialize(() => {
 */
 
 //-------Creating Module Table--------------
-
+/*
 db.serialize(() => {
   const modules_create = `CREATE TABLE modules
   (m_id INTEGER,
@@ -83,9 +83,9 @@ db.serialize(() => {
     if (err) console.error(err);
   });
 });
-
+*/
 // //------ Creating Enrollments Table
-
+/*
 db.serialize(() => {
   const enrollments_create = `CREATE TABLE enrollments
   (c_id,
@@ -110,6 +110,7 @@ db.serialize(() => {
     if (err) console.error(err);
   });
 });
+*/
 
 // db.run(`delete from users`, (err) => console.log(err));
 

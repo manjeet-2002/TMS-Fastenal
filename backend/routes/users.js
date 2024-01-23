@@ -44,7 +44,10 @@ module.exports = (db) => {
   //----------TOGGLE COURSE ENROLLMENT-----------------
 
   router.put("/:u_id/enrollment", (req, res) => {
+    console.log("entered");
+
     try {
+      // console.log("Hello");
       const u_id = parseInt(req.params.u_id);
       const c_id = req.body.c_id;
       const is_enrolled = req.body.is_enrolled;
@@ -57,26 +60,61 @@ module.exports = (db) => {
             if (err) {
               res.status(407).json({ message: err });
             } else {
-              res.status(204).json({ message: "success" });
+              db.run(
+                `UPDATE courses SET enrolled=enrolled-1 WHERE c_id=(?)`,
+                [c_id],
+                (err) => {
+                  if (err) {
+                    res.status(407).json({ message: err });
+                  } else {
+                    res.status(204).json({ message: "success" });
+                  }
+                }
+              );
             }
           }
         );
       } else {
-        db.run(
-          `INSERT INTO enrollments VALUES (?,?,?,?)`,
-          [c_id, u_id, 0, 0],
-          (err) => {
-            if (err)
-              return res
-                .status(500)
-                .json({ message: "User is Already Enrolled!" });
-            else {
-              res.status(201).json({ message: "Enrolled Sucessfully!" });
+        db.all(
+          `SELECT * FROM courses WHERE c_id=(?) AND enrolled=max_attendees`,
+          [c_id],
+          (err, rows) => {
+            //CHECK STATUS CODE
+            if (err) return res.status(500).json({ message: err });
+            else if (!rows) {
+              res.status(400).json({ message: "Max Attendees!!!" });
+            } else {
+              db.run(
+                `INSERT INTO enrollments VALUES (?,?,?,?)`,
+                [c_id, u_id, 0, 0],
+                (err) => {
+                  if (err)
+                    return res
+                      .status(500)
+                      .json({ message: "User is Already Enrolled!" });
+                  else {
+                    db.run(
+                      `UPDATE courses SET enrolled=enrolled+1 WHERE c_id=(?)`,
+                      [c_id],
+                      (err) => {
+                        //CHECK STATUS CODE
+
+                        if (err) {
+                          res.status(407).json({ message: err });
+                        } else {
+                          res.status(204).json({ message: "success" });
+                        }
+                      }
+                    );
+                  }
+                }
+              );
             }
           }
         );
       }
     } catch (err) {
+      console.log("BYE");
       if (err) return res.json({ success: false, status: 400 });
     }
 
