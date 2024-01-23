@@ -47,7 +47,7 @@ const CourseDetails = (props) => {
   return (
     <div className="overlay">
       <div className="container">
-        <h1 className="heading">{courses.c_name}</h1>
+        <h1 className="heading">{courses?.c_name}</h1>
         <p>Modules :</p>
         <ul>
           {module.map((item) => (
@@ -58,11 +58,11 @@ const CourseDetails = (props) => {
         </ul>
 
         <div>
-          <p className="paragraph">{courses.description}</p>
-          <p className="paragraph">Duration: {courses.duration} hours</p>
-          <p className="paragraph">Start Date: {courses.start_date} </p>
-          <p className="paragraph">End Date: {courses.end_date} </p>
-          <p className="paragraph">Total Seats : {courses.max_attendees}</p>
+          <p className="paragraph">{courses?.description}</p>
+          <p className="paragraph">Duration: {courses?.duration} hours</p>
+          <p className="paragraph">Start Date: {courses?.start_date} </p>
+          <p className="paragraph">End Date: {courses?.end_date} </p>
+          <p className="paragraph">Total Seats : {courses?.max_attendees}</p>
         </div>
         <div className="button-div">
           <button type="button" className="button">
