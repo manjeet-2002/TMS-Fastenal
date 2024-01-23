@@ -98,7 +98,7 @@ const DateInput = ({ control, name, label }) => {
 };
 
 // A custom component that renders the form
-const AddCourseForm = () => {
+const AddCourseForm = (props) => {
     // Initialize the useForm hook
     const navigate = useNavigate();
     const {
@@ -137,7 +137,7 @@ const AddCourseForm = () => {
             .catch((err) => {
                 console.log("error");
             });
-
+        props.handleAllCourses();
         reset();
     };
 
