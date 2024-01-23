@@ -81,9 +81,6 @@ const courses = [
   },
 ];
 
-let options = ["All Courses", "Upcoming Courses", "Courses Enrolled"];
-options = ["All Courses", "Upcoming Courses"];
-
 function App() {
   const [data, setData] = useState(false);
 

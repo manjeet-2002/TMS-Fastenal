@@ -4,31 +4,82 @@ import Sidebar from "./Sidebar";
 import Home from "./Home";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+
+const options = ["Past Courses", "Current Courses", "Upcoming Courses"];
 
 function Dashboard(props) {
     const navigate = useNavigate();
-    const [showForm, setShowForm] = useState(0);
-    const [showAllCourses, setShowAllCourses] = useState(1);
+    const [showObject, setshowObject] = useState({
+        showForm: 0,
+        showAllCourses: 1,
+        showMyCourses: 0,
+    });
+    const [courseType, setcourseType] = useState(options[1]);
     const handleAddCourse = () => {
-        setShowForm(1);
-        setShowAllCourses(0);
+        setshowObject((prevState) => ({
+            ...prevState,
+            showForm: 1,
+            showAllCourses: 0,
+            showMyCourses: 0,
+        }));
     };
     const handleAllCourses = () => {
-        setShowForm(0);
-        setShowAllCourses(1);
+        setshowObject((prevState) => ({
+            ...prevState,
+            showForm: 0,
+            showAllCourses: 1,
+            showMyCourses: 0,
+        }));
     };
-
-    useEffect(()=>{
-        if(localStorage.getItem("uid")===null) navigate("/login");
-    },[navigate]);
+    const handleMyCourses = () => {
+        setshowObject((prevState) => ({
+            ...prevState,
+            showForm: 0,
+            showAllCourses: 0,
+            showMyCourses: 1,
+        }));
+    };
+    const handleChange = (event) => {
+        const selectedValue = event.target.value;
+        setcourseType(selectedValue);
+    };
+    useEffect(() => {
+        if (localStorage.getItem("uid") === null) navigate("/login");
+    }, [navigate]);
     return (
         <div className="grid-container">
             <Sidebar
-                isAdmin={props.isAdmin}
                 handleAddCourse={handleAddCourse}
+                handleMyCourses={handleMyCourses}
                 handleAllCourses={handleAllCourses}
             />
-            <Home isAdmin={props.isAdmin} showForm={showForm} />
+            <FormControl>
+                <InputLabel id="demo-simple-select-label"></InputLabel>
+                <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={courseType}
+                    label="Age"
+                    onChange={handleChange}
+                >
+                    {options.map((option) => (
+                        <MenuItem key={option} value={option}>
+                            {option}
+                        </MenuItem>
+                    ))}
+                </Select>
+            </FormControl>
+            <Home
+                options={options}
+                courseType={courseType}
+                showForm={showObject.showForm}
+                showAllCourses={showObject.showAllCourses}
+                showMyCourses={showObject.showMyCourses}
+            />
         </div>
     );
 }

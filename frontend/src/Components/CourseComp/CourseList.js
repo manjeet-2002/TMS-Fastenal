@@ -1,58 +1,59 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import "./CourseList.css";
 import CourseItem from "./CourseItem";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
 
 const CourseList = (props) => {
-    const uid = localStorage.getItem("uid");
-    const options = props.options;
-    const [courseType, setcourseType] = useState(options[0]);
-    const [courses, setCourses] = useState([]);
-    useEffect(() => {
-        if (courseType === options[0]) {
-            fetch("http://localhost:5000/api/courses")
-                .then((response) => response.json())
-                .then((data) => setCourses(data.data));
-        } else if (courseType === options[1]) {
-        } else {
-            console.log("reached");
-            fetch(`http://localhost:5000/api/users/${uid}/courses`)
-                .then((response) => response.json())
-                .then((data) => setCourses(data));
-        }
-    }, [courseType, options, uid]);
-    const handleChange = (event) => {
-        const selectedValue = event.target.value;
-        setcourseType(selectedValue);
+    const [courseToDisplay, setCourseToDisplay] = useState([]);
+    const courseStateList = {
+        pastCourses: [],
+        currentCourses: [],
+        upcomingCourses: [],
     };
+    courseStateList.pastCourses = props.courses.filter(
+        (course) => new Date(course.end_date).getTime() < new Date().getTime()
+    );
+    courseStateList.currentCourses = props.courses.filter(
+        (course) =>
+            new Date(course.start_date).getTime() <= new Date().getTime() &&
+            new Date(course.end_date).getTime() >= new Date().getTime()
+    );
+    courseStateList.upcomingCourses = props.courses.filter(
+        (course) => new Date(course.start_date).getTime() > new Date().getTime()
+    );
+    console.log(props);
+    console.log(courseStateList);
+    // useEffect(() => {
+    //     if (props.courseType === props.options[0]) {
+    //         setCourseToDisplay(courseStateList.pastCourses);
+    //     } else if (props.courseType === props.options[1]) {
+    //         setCourseToDisplay(courseStateList.currentCourses);
+    //     } else {
+    //         setCourseToDisplay(courseStateList.upcomingCourses);
+    //     }
+    // }, [props.showAllCourses, props.showMycourses, props.options]);
     return (
         <>
-            <FormControl>
-                <InputLabel id="demo-simple-select-label"></InputLabel>
-                <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={courseType}
-                    label="Age"
-                    onChange={handleChange}
-                >
-                    {options.map((option) => (
-                        <MenuItem key={option} value={option}>
-                            {option}
-                        </MenuItem>
-                    ))}
-                </Select>
-            </FormControl>
-            <div className="course__list">
-                {courses.map((course) => {
+            {props.courseType === props.options[0] && <div className="course__list">
+                {courseStateList.pastCourses.map((course) => {
                     return (
-                        <CourseItem isAdmin={props.isAdmin} course={course} />
+                        <CourseItem course={course} />
                     );
                 })}
-            </div>
+            </div>}
+            {props.courseType === props.options[1] && <div className="course__list">
+                {courseStateList.currentCourses.map((course) => {
+                    return (
+                        <CourseItem course={course} />
+                    );
+                })}
+            </div>}
+            {props.courseType === props.options[2] && <div className="course__list">
+                {courseStateList.upcomingCourses.map((course) => {
+                    return (
+                        <CourseItem course={course} />
+                    );
+                })}
+            </div>}
         </>
     );
 };
