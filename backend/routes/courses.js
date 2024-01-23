@@ -4,21 +4,19 @@ const router = express.Router();
 module.exports = (db) => {
   //--------GET ALL COURSES-------------
   router.get("/", (req, res) => {
-    const u_id = req.body.u_id;
+    const u_id = req.query.u_id;
     console.log(u_id);
     try {
       db.all(
         `select * from courses as a left join (SELECT c_id as isEnrolled FROM enrollments WHERE u_id=(?)) as b on a.c_id = b.isEnrolled`,
         [u_id],
         (err, rows) => {
-          console.log(err);
           if (err)
             return res.json({
               success: false,
               status: 400,
               msg: "Resource Not found",
             });
-          console.log(rows);
           return res.json({
             status: 200,
             data: rows,
@@ -36,6 +34,7 @@ module.exports = (db) => {
   router.get("/:c_id/attendance", (req, res) => {
     try {
       const c_id = req.params.c_id;
+      console.log("msg : " + c_id);
       db.all(
         `SELECT enrollments.u_id,users.u_name,enrollments.attended FROM enrollments JOIN users ON users.u_id=enrollments.u_id AND enrollments.c_id=(?)`,
         [c_id],
@@ -44,11 +43,8 @@ module.exports = (db) => {
             console.log("bye1");
 
             return res.status(500).json({ message: err });
-          } else if (rows.length < 1) {
-            return res
-              .status(204)
-              .json({ message: "No Enrollements in the course!" });
           } else {
+            console.log(rows);
             return res.status(200).json(rows);
           }
         }
@@ -101,32 +97,38 @@ module.exports = (db) => {
   // I WILL GET users allong with their current attendance system
   //---------GET A SPECIFIC COURSE-------------
 
-  router.get("/:c_id", (req, res) => {
+  router.get("/:c_id", async (req, res) => {
     try {
       const c_id = req.params.c_id;
       const courseDetails = {};
 
-      db.get(`SELECT * FROM courses WHERE c_id=(?)`, [c_id], (err, course) => {
-        console.log(course);
+      db.serialize(() => {
+        db.get(
+          `SELECT * FROM courses WHERE c_id=(?)`,
+          [c_id],
+          (err, course) => {
+            console.log(course);
 
-        if (!course)
-          return res.status(404).json({ message: "resource not found" });
-        if (err) return res.status(500).json({ message: "Internal Error" });
-        courseDetails.course = course;
+            if (!course)
+              return res.status(404).json({ message: "resource not found" });
+            if (err) return res.status(500).json({ message: "Internal Error" });
+            courseDetails.course = course;
+          }
+        );
+
+        db.all(
+          `SELECT m_id, m_name FROM modules WHERE c_id=(?)`,
+          [c_id],
+          (err, modules) => {
+            console.log(modules);
+            if (!modules)
+              return res.status(404).json({ message: "resource not found" });
+            if (err) return res.status(500).json({ message: "Internal Error" });
+            courseDetails.modules = modules;
+            res.status(200).json(courseDetails);
+          }
+        );
       });
-
-      db.all(
-        `SELECT m_id, m_name FROM modules WHERE c_id=(?)`,
-        [c_id],
-        (err, modules) => {
-          console.log(modules);
-          if (!modules)
-            return res.status(404).json({ message: "resource not found" });
-          if (err) return res.status(500).json({ message: "Internal Error" });
-          courseDetails.modules = modules;
-          res.status(200).json(courseDetails);
-        }
-      );
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Server error" });
