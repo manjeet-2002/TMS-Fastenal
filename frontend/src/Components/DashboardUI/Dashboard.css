@@ -176,7 +176,7 @@ body {
 }
 
 
-@media screen and (max-width: 992px) {
+/* @media screen and (max-width: 992px) {
     .grid-container {
         grid-template-columns: 1fr;
         grid-template-rows: 0.2fr 3fr;
@@ -185,9 +185,7 @@ body {
             "main";
     }
 
-    #sidebar {
-        display: none;
-    }
+   
 
     .menu-icon {
         display: inline;
@@ -215,4 +213,4 @@ body {
     .header-left {
         display: none;
     }
-}
+} */

@@ -1,11 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { FormGroup, FormControlLabel, Checkbox } from "@mui/material";
+import { List, Checkbox, ListItem } from "@mui/material";
+import axios from "axios";
+
 const Attendance = (props) => {
   console.log(props.attendees);
   const attendeeList = props.attendees;
 
-  const markAttendance = () => {
-    console.log(attendeeList);
+  const markAttendance = async () => {
+    await axios
+      .put(
+        `http://localhost:5000/api/courses/${props.c_id}/attendance`,
+        attendeeList
+      )
+      .then((res) => console.log(res))
+      .catch((err) => console.error(err));
   };
 
   const handleChange = (e) => {
@@ -15,21 +23,16 @@ const Attendance = (props) => {
 
   return (
     <div>
-      {props.attendees.map((attendee, index) => (
-        <FormGroup>
-          <FormControlLabel
-            key={index}
-            name={index}
-            control={
-              <Checkbox
-                defaultChecked={attendee.attended}
-                onChange={handleChange}
-              />
-            }
-            label={attendee.u_name}
-          />
-        </FormGroup>
-      ))}
+      <List>
+        {props.attendees.map((attendee, index) => (
+          <ListItem>
+            {attendee.attended === 0 && (
+              <Checkbox name={index} onChange={handleChange} />
+            )}
+            <p>{attendee.u_name}</p>
+          </ListItem>
+        ))}
+      </List>
       <button onClick={markAttendance}>Mark Attendance</button>
     </div>
   );

@@ -59,10 +59,6 @@ module.exports = (db) => {
     const passed = 1;
     try {
       const c_id = req.params.c_id;
-
-      //An array as input with u_id's their attendance
-      //{u_id:,attended:}
-
       console.log(":Hello");
 
       const users = req.body;
@@ -84,7 +80,6 @@ module.exports = (db) => {
         );
       });
       if (passed == 0) {
-        console.log("HEHE");
         res.status(500).json({ message: "Internal Error" });
       } else {
         res.status(200).json({ message: "Attendance Marked Succesfully!" });
