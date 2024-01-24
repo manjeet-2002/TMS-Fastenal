@@ -11,6 +11,13 @@
     margin: 10px;
     min-width: 200px;
     min-height: 150px;
+    
+}
+.courseItem__div:hover{
+  
+    transform: scale(1.15);
+    transition-duration: 500ms;
+    z-index: 50;
 }
 
 .btns {
@@ -21,4 +28,7 @@
 .course_description {
     text-align: center;
     color: black;
+}
+.para1{
+    font-weight: bold;
 }

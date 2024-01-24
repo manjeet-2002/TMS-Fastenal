@@ -60,14 +60,11 @@ const CourseDetails = (props) => {
           console.log(res.data.course);
           setCourses(res.data.course);
           setModule(res.data.modules);
-
-          // course = res.data.course;
-          // modules = res.data.modules;
         })
         .catch((err) => console.log(err));
     };
     fetchData();
-  }, []); //par use effect kab chalega wo sochna
+  }, []);
 
   return (
     <div className="overlay">
