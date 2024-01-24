@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { List, Checkbox, ListItem } from "@mui/material";
 import axios from "axios";
+import "./attendance.css";
 
 const Attendance = (props) => {
   console.log(props.attendees);
@@ -27,18 +28,32 @@ const Attendance = (props) => {
   };
 
   return (
-    <div>
-      <List>
+    <div className="attendance">
+      <h5 className="att-title">Attendees</h5>
+      <List
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "flex-start",
+          alignItems: "flex-start",
+        }}
+      >
+        {props.attendees.length === 0 && <p>No Enrollments</p>}
+
         {props.attendees.map((attendee, index) => (
           <ListItem>
-            {attendee.attended === 0 && (
+            {attendee.attended === 0 ? (
               <Checkbox name={index} onChange={handleChange} />
+            ) : (
+              <span className="emoji">✅</span>
             )}
             <p>{attendee.u_name}</p>
           </ListItem>
         ))}
       </List>
-      <button onClick={markAttendance}>Mark Attendance</button>
+      {props.attendees.length !== 0 && (
+        <button onClick={markAttendance}>Mark Attendance</button>
+      )}
       <p>{loading}</p>
     </div>
   );
