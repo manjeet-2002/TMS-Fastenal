@@ -9,14 +9,14 @@
     border-radius: 10px;
     padding: 10px;
     margin: 10px;
-    min-width: 200px;
-    min-height: 150px;
+    min-width: 250px;
+    min-height: 200px;
     
 }
 .courseItem__div:hover{
   
-    transform: scale(1.15);
-    transition-duration: 500ms;
+    transform: scale(1.05);
+    transition-duration: 250ms;
     z-index: 50;
 }
 
