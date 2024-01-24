@@ -10,7 +10,7 @@ const db = new Database("./test.db", sqlite3.OPEN_READWRITE, (err) => {
 
 // db.run(`DROP TABLE modules`);
 // ---------Creating Courses Table--------
-db.run(`ALTER TABLE courses ADD COLUMN enrolled INTEGER DEFAULT 0`);
+// db.run(`ALTER TABLE courses ADD COLUMN enrolled INTEGER DEFAULT 0`);
 /*db.serialize(() => {
   const courses_create = `CREATE TABLE courses(c_id TEXT PRIMARY KEY,
     c_name TEXT,
@@ -113,5 +113,8 @@ db.serialize(() => {
 */
 
 // db.run(`delete from users`, (err) => console.log(err));
+// db.run(`delete from users`);
+// db.run(`delete from enrollments`);
+// db.run(`delete from modules`);
 
 db.close();

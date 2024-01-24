@@ -30,6 +30,7 @@ const CourseDetails = (props) => {
   const uid = localStorage.getItem("uid");
 
   async function handleEnrollment() {
+    setEnrollState((prevState) => !prevState);
     const is_enrolled = enrollState;
     const c_id = props.c_id;
     const url = `http://localhost:5000/api/users/${uid}/enrollment`;
@@ -42,8 +43,8 @@ const CourseDetails = (props) => {
         console.log(res.data);
 
         if (res.status === 204) {
-          setEnrollState((prevState) => !prevState);
           props.handleParentReload();
+          window.location.reload();
         }
       })
       .catch((err) => {
@@ -80,10 +81,8 @@ const CourseDetails = (props) => {
         <p>Modules :</p>
         <ul>
           {module.map((item, index) => (
-            <div className="box">
-              <li key={index} className="list-item">
-                {item.m_name}
-              </li>
+            <div key={index} className="box">
+              <li className="list-item">{item.m_name}</li>
             </div>
           ))}
         </ul>
@@ -93,7 +92,9 @@ const CourseDetails = (props) => {
           <p className="paragraph">Duration: {courses?.duration} hours</p>
           <p className="paragraph">Start Date: {courses?.start_date} </p>
           <p className="paragraph">End Date: {courses?.end_date} </p>
-          <p className="paragraph">Total Seats : {courses?.max_attendees}</p>
+          <p className="paragraph">
+            Seats Filled : {props.enrollments}/{courses?.max_attendees}
+          </p>
         </div>
         <div className="button-div">
           {new Date(courses?.end_date).getTime() >= new Date().getTime() &&

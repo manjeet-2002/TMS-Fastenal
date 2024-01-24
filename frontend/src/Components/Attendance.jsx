@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { List, Checkbox, ListItem } from "@mui/material";
+import React, { useState } from "react";
+import { List, Checkbox, ListItem, Button } from "@mui/material";
 import axios from "axios";
 import "./attendance.css";
 
@@ -52,7 +52,9 @@ const Attendance = (props) => {
         ))}
       </List>
       {props.attendees.length !== 0 && (
-        <button onClick={markAttendance}>Mark Attendance</button>
+        <Button variant="outlined" onClick={markAttendance}>
+          Mark
+        </Button>
       )}
       <p>{loading}</p>
     </div>
