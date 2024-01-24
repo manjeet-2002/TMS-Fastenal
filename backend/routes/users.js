@@ -81,18 +81,19 @@ module.exports = (db) => {
           (err, rows) => {
             //CHECK STATUS CODE
             if (err) return res.status(500).json({ message: err });
-            else if (!rows) {
+            else if (rows.length > 0) {
               res.status(400).json({ message: "Max Attendees!!!" });
             } else {
               db.run(
                 `INSERT INTO enrollments VALUES (?,?,?,?)`,
                 [c_id, u_id, 0, 0],
                 (err) => {
-                  if (err)
+                  if (err) {
+                    console.log(err);
                     return res
                       .status(500)
                       .json({ message: "User is Already Enrolled!" });
-                  else {
+                  } else {
                     db.run(
                       `UPDATE courses SET enrolled=enrolled+1 WHERE c_id=(?)`,
                       [c_id],
