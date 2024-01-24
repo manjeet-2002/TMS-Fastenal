@@ -8,46 +8,22 @@ module.exports = (db) => {
   router.get("/", (req, res) => {
     try {
       db.all(`select * from users`, [], (err, rows) => {
-        if (err) return res.json({ success: false, status: 400, msg: "hello" });
+        if (err) return res.status(400).json({ message: "Bad Request" });
 
-        return res.json({
-          status: 200,
+        return res.status(200).json({
           data: rows,
           success: true,
         });
       });
     } catch (err) {
-      if (err) return res.json({ success: false, status: 400 });
+      if (err) return res.status(400).json({ message: "Bad Request" });
     }
   });
-
-  //-----------GET A SPECIFIC USER-------------------
-
-  // router.get("/:u_id", (req, res) => {
-  //   try {
-  //     const u_id = parseInt(req.params.u_id);
-
-  //     db.get(`SELECT * FROM users WHERE u_id=(?)`, [u_id], (err, course) => {
-  //       console.log(course);
-
-  //       if (!course)
-  //         return res.status(404).json({ message: "resource not found" });
-  //       if (err) return res.status(500).json({ message: "Internal Error" });
-  //       res.status(200).json(course);
-  //     });
-  //   } catch {
-  //     console.error("error");
-  //     res.status(500).json({ message: "Server error" });
-  //   }
-  // });
 
   //----------TOGGLE COURSE ENROLLMENT-----------------
 
   router.put("/:u_id/enrollment", (req, res) => {
-    console.log("entered");
-
     try {
-      // console.log("Hello");
       const u_id = parseInt(req.params.u_id);
       const c_id = req.body.c_id;
       const is_enrolled = req.body.is_enrolled;
@@ -58,14 +34,14 @@ module.exports = (db) => {
           [u_id, c_id],
           (err) => {
             if (err) {
-              res.status(407).json({ message: err });
+              res.status(404).json({ message: err });
             } else {
               db.run(
                 `UPDATE courses SET enrolled=enrolled-1 WHERE c_id=(?)`,
                 [c_id],
                 (err) => {
                   if (err) {
-                    res.status(407).json({ message: err });
+                    res.status(404).json({ message: err });
                   } else {
                     res.status(204).json({ message: "success" });
                   }
@@ -101,7 +77,7 @@ module.exports = (db) => {
                         //CHECK STATUS CODE
 
                         if (err) {
-                          res.status(407).json({ message: err });
+                          res.status(404).json({ message: err });
                         } else {
                           res.status(204).json({ message: "success" });
                         }
@@ -115,8 +91,7 @@ module.exports = (db) => {
         );
       }
     } catch (err) {
-      console.log("BYE");
-      if (err) return res.json({ success: false, status: 400 });
+      if (err) return res.status(400).json({ message: err });
     }
 
     //ASSUMING IT IS UPCOMING COURSE
