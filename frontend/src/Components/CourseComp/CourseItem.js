@@ -6,6 +6,7 @@ import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import CourseDetails from "../CourseDetails";
 
+//Modal Style
 const style = {
   position: "absolute",
   top: "50%",
@@ -33,9 +34,11 @@ const CourseItem = (props) => {
           : "white",
       }}
     >
-      <p className="course_description">{props.course.c_name}</p>
-      <p className="course_description">{props.course.start_date}</p>
-      <p className="course_description">{props.course.end_date}</p>
+      <p className="course_description para1">{props.course.c_name}</p>
+      <p className="course_description">
+        Start Date :{props.course.start_date}
+      </p>
+      <p className="course_description">End Date:{props.course.end_date}</p>
       <div className="btns">
         {isAdmin === "1" && <MyBtn name="edit" />}
         <Button onClick={handleOpen}>View</Button>
