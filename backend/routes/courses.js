@@ -181,7 +181,6 @@ module.exports = (db) => {
     }
   });
 
-  // KINDLY SEND old enrolled value in the payload
   router.put("/", (req, res) => {
     try {
       const {
@@ -241,37 +240,32 @@ module.exports = (db) => {
   });
   return router;
 };
+
 // -- PUT REQUEST FOR COURSE EDIT
+router.post("/", (req, res) => {
+  try {
+    const {
+      c_id,
+      c_name,
+      start_date,
+      end_date,
+      duration,
+      credits,
+      max_attendees,
+    } = req.body;
 
-//   router.post("/", (req, res) => {
-//     try {
-//       const {
-//         c_id,
-//         c_name,
-//         start_date,
-//         end_date,
-//         duration,
-//         credits,
-//         max_attendees,
-//       } = req.body;
-
-//       db.run(
-//         `INSERT INTO courses VALUES(?,?,?,?,?,?,?)`,
-//         [c_id, c_name, start_date, end_date, duration, credits, max_attendees],
-//         (err) => {
-//           if (err) return console.error(err);
-//         }
-//       );
-//       res.json({
-//         status: 201,
-//         success: true,
-//       });
-//     } catch (err) {
-//       if (err) return res.json({ success: false, status: 400 });
-//     }
-//   });
-
-//   return router;
-// };
-
-//--- POSTING A NEW COURSE
+    db.run(
+      `INSERT INTO courses VALUES(?,?,?,?,?,?,?)`,
+      [c_id, c_name, start_date, end_date, duration, credits, max_attendees],
+      (err) => {
+        if (err) return console.error(err);
+      }
+    );
+    res.json({
+      status: 201,
+      success: true,
+    });
+  } catch (err) {
+    if (err) return res.json({ success: false, status: 400 });
+  }
+});

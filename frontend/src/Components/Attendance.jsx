@@ -5,14 +5,19 @@ import axios from "axios";
 const Attendance = (props) => {
   console.log(props.attendees);
   const attendeeList = props.attendees;
+  const [loading, setLoading] = useState("");
 
   const markAttendance = async () => {
+    setLoading("Please wait...");
     await axios
       .put(
         `http://localhost:5000/api/courses/${props.c_id}/attendance`,
         attendeeList
       )
-      .then((res) => console.log(res))
+      .then((res) => {
+        if (res.status === 200) setLoading("Attendance Marked");
+        else setLoading("Failed, Try again");
+      })
       .catch((err) => console.error(err));
   };
 
@@ -34,6 +39,7 @@ const Attendance = (props) => {
         ))}
       </List>
       <button onClick={markAttendance}>Mark Attendance</button>
+      <p>{loading}</p>
     </div>
   );
 };
