@@ -40,11 +40,8 @@ module.exports = (db) => {
         [c_id],
         (err, rows) => {
           if (err) {
-            console.log("bye1");
-
             return res.status(500).json({ message: err });
           } else {
-            console.log(rows);
             return res.status(200).json(rows);
           }
         }
@@ -181,6 +178,8 @@ module.exports = (db) => {
     }
   });
 
+  //--course edit
+
   router.put("/", (req, res) => {
     try {
       const {
@@ -240,32 +239,3 @@ module.exports = (db) => {
   });
   return router;
 };
-
-// -- PUT REQUEST FOR COURSE EDIT
-router.post("/", (req, res) => {
-  try {
-    const {
-      c_id,
-      c_name,
-      start_date,
-      end_date,
-      duration,
-      credits,
-      max_attendees,
-    } = req.body;
-
-    db.run(
-      `INSERT INTO courses VALUES(?,?,?,?,?,?,?)`,
-      [c_id, c_name, start_date, end_date, duration, credits, max_attendees],
-      (err) => {
-        if (err) return console.error(err);
-      }
-    );
-    res.json({
-      status: 201,
-      success: true,
-    });
-  } catch (err) {
-    if (err) return res.json({ success: false, status: 400 });
-  }
-});
